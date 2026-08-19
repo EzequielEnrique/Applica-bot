@@ -1,11 +1,4 @@
-// Servidor del bot de WhatsApp para Applica.
-// Explicacion rapida de que hace este archivo:
-//  1) Expone GET /webhook  -> Meta lo usa UNA vez para confirmar que el
-//     webhook es tuyo (te manda un "challenge" y vos se lo devolves).
-//  2) Expone POST /webhook -> Meta te manda ahi cada mensaje nuevo que
-//     te escribe un cliente. Ahi decidimos que responder.
-//  3) Tiene una funcion sendWhatsAppMessage() que le pide a la API de
-//     Meta que le mande un mensaje de texto a alguien.
+//aca van todas las funciones
 
 require("dotenv").config();
 const express = require("express");
@@ -21,8 +14,7 @@ const {
   PORT = 3000,
 } = process.env;
 
-// Chequeo basico: si falta alguna variable de entorno, avisamos apenas
-// arranca el server en vez de fallar mas adelante de forma confusa.
+
 ["WHATSAPP_TOKEN", "PHONE_NUMBER_ID", "VERIFY_TOKEN"].forEach((key) => {
   if (!process.env[key]) {
     console.warn(
@@ -31,9 +23,7 @@ const {
   }
 });
 
-// Version de la Graph API de Meta. La pueden ir subiendo con el tiempo,
-// si en el futuro deja de funcionar, revisa la doc de Meta por una version
-// mas nueva y cambiala solo aca.
+
 const GRAPH_API_VERSION = "v21.0";
 
 /**
@@ -67,8 +57,6 @@ app.get("/webhook", (req, res) => {
  * PASO 2 (todo el tiempo): acá llegan los mensajes reales de WhatsApp.
  */
 app.post("/webhook", async (req, res) => {
-  // Le respondemos rapido a Meta con 200 para que no reintente el envio.
-  // Todo el trabajo real lo hacemos despues, sin bloquear la respuesta.
   res.sendStatus(200);
 
   try {
@@ -77,18 +65,15 @@ app.post("/webhook", async (req, res) => {
     const value = change?.value;
     const message = value?.messages?.[0];
 
-    // Meta tambien manda webhooks de otras cosas (ej: confirmaciones de
-    // entrega de mensajes). Si no hay un "message" nuevo, no hacemos nada.
+
     if (!message) {
       return;
     }
 
-    const from = normalizeArgentineNumber(message.from); // numero del cliente que escribio
+    const from = normalizeArgentineNumber(message.from); //formato de numero argentino, no detectaba el 9
     const type = message.type;
 
     if (type !== "text") {
-      // Por ahora solo manejamos texto. Si mandan un audio, imagen, etc,
-      // le pedimos que escriba una opcion.
       await sendWhatsAppMessage(from, menu.welcome);
       return;
     }
