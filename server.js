@@ -83,7 +83,7 @@ app.post("/webhook", async (req, res) => {
       return;
     }
 
-    const from = message.from; // numero del cliente que escribio
+    const from = normalizeArgentineNumber(message.from); // numero del cliente que escribio
     const type = message.type;
 
     if (type !== "text") {
@@ -112,6 +112,14 @@ app.post("/webhook", async (req, res) => {
  *   te manda Meta en message.from, ya viene listo para usar).
  * @param {string} body - el texto a enviar.
  */
+
+function normalizeArgentineNumber(number) {
+  if (number.startsWith("549")) {
+    return "54" + number.slice(3);
+  }
+  return number;
+}
+
 async function sendWhatsAppMessage(to, body) {
   const url = `https://graph.facebook.com/${GRAPH_API_VERSION}/${PHONE_NUMBER_ID}/messages`;
 
