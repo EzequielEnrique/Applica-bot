@@ -3,7 +3,7 @@
 module.exports = {
   welcome:
     "¡Hola! 👋 Gracias por comunicarte con *Huella Urbana URL*.\n\n" +
-    "Estamos para ayudarte. Por favor, dejamos tu consulta y uno de nuestros asesores te responderá a la brevedad.\n" +
+    "Estamos para ayudarte. Por favor, dejamos tu consulta y uno de nuestros asesores te responderá a la brevedad.\n\n" +
     "Para agilizar tu atención, por favor respondé con el número del proyecto sobre el cual te interesa consultar:\n\n" +
     "1️⃣ Edificio Huella Sur (Monseñor Zaspe 3263, Santa Fe).\n" +
     "2️⃣ Edificio Huella Tower (Obispo Gelabert 1940, Santo Tomé).\n" +
