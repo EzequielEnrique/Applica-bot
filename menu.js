@@ -13,7 +13,7 @@ module.exports = {
 
   options: {
     "1":
-      "En que unidad está interesado/a: \n\n" +
+      "En que unidad está interesado/a: " +
       "1️⃣: Departamento de un dormitorio.\n" +
       "2️⃣: Departamento de dos dormitorios.\n" +
       "3️⃣: Loft.\n" +
@@ -22,7 +22,7 @@ module.exports = {
       "6️⃣: Volver al inicio.\n",
 
     "2":
-      "En que unidad está interesado/a: \n\n" +
+      "En que unidad está interesado/a: " +
       "1️⃣: Departamento de un dormitorio.\n" +
       "2️⃣: Departamento de dos dormitorios.\n" +
       "3️⃣: Loft.\n" +
