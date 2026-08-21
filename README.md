@@ -123,7 +123,7 @@ Cuando ya probaste que funciona y quieras usar el número real de Applica:
 
 1. **Hacé la verificación de negocio en Meta** (gratis) — ya vimos los
    pasos en la conversación anterior.
-2. **Activá "coexistencia"** para usar el número real de Applica sin dejar
+2. **Activá "coexistencia"** para usar el número real de Huella Digital SRL sin dejar
    de usar la app de WhatsApp Business normal desde el celular.
 3. **Generá un token permanente**: el token temporal de la Parte 1 expira
    en 24hs. Para producción necesitás crear un "System User" en el Meta
