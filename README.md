@@ -1,7 +1,12 @@
 # applica-whatsapp-bot
 
 Bot chiquito para WhatsApp: cuando alguien te escribe, responde con un menú
-de 3 opciones (1, 2 o 3) y según lo que elija, contesta un mensaje distinto.
+de proyectos (Huella Sur, Huella Tower, Huella Bonita o Administración
+General). Si elige uno de los edificios con unidades disponibles (Sur o
+Tower), le pregunta además qué tipo de unidad le interesa. En cualquier otro
+caso, avisa que un asesor lo va a contactar y el bot se queda en silencio:
+a partir de ahí sigue la charla una persona, hasta que pasen 24hs sin
+actividad (ahí el bot vuelve a arrancar desde el menú principal).
 
 Corre sobre la **WhatsApp Cloud API** de Meta (oficial y gratuita para este
 caso de uso, porque siempre es el cliente el que escribe primero).
@@ -110,7 +115,11 @@ que crea un túnel temporal.
 
 Desde el celular que agregaste como número de prueba en la Parte 1, mandale
 un WhatsApp al número de prueba que te dio Meta. Deberías recibir el menú
-automático, y si respondés "1", "2" o "3", la respuesta correspondiente.
+de proyectos, y si respondés con el número de un proyecto (1 a 4):
+- Si elegís Sur o Tower (1 o 2), te va a preguntar por el tipo de unidad.
+- Si elegís Bonita o Administración (3 o 4) —o ya elegiste el tipo de
+  unidad— te va a avisar que un asesor te va a contactar, y a partir de ahí
+  el bot se queda callado.
 
 En la terminal de `npm start` vas a ver los logs de cada mensaje que entra
 y sale, útil para debuggear si algo no contesta.
