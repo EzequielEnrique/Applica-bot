@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Conectar WhatsApp de Huella Urbana</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 640px;
+      margin: 60px auto;
+      padding: 0 20px;
+      line-height: 1.5;
+    }
+    button {
+      background: #1877f2;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover { background: #166fe5; }
+    #resultado {
+      margin-top: 24px;
+      padding: 16px;
+      background: #f0f2f5;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 13px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Conectar WhatsApp de Huella Urbana</h1>
+  <p>
+    Esta página sirve para conectar el número real de Huella Urbana a la API,
+    manteniendo la app de WhatsApp Business funcionando en el celular
+    (Coexistencia). Se usa UNA sola vez.
+  </p>
+  <p>
+    Iniciá sesión con la cuenta de Facebook que tiene acceso de administrador
+    al portfolio "Huella Urbana" (la cuenta verde) y hacé clic en el botón.
+  </p>
+
+  <button id="btnConectar">Conectar WhatsApp</button>
+
+  <div id="resultado"></div>
+
+  <!-- SDK de Facebook -->
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: "2165560268174025", // ID de tu app "Applica-bot"
+        cookie: true,
+        xfbml: true,
+        version: "v21.0",
+      });
+    };
+  </script>
+  <script
+    async
+    defer
+    crossorigin="anonymous"
+    src="https://connect.facebook.net/es_LA/sdk.js"
+  ></script>
+
+  <script>
+    const resultadoDiv = document.getElementById("resultado");
+
+    function mostrarResultado(texto) {
+      resultadoDiv.style.display = "block";
+      resultadoDiv.textContent += texto + "\n\n";
+    }
+
+    // Meta nos manda la respuesta de dos formas: por este evento de mensajes,
+    // y por el callback de FB.login más abajo. Escuchamos las dos para no
+    // perdernos nada.
+    window.addEventListener("message", (event) => {
+      if (!event.origin.endsWith("facebook.com")) return;
+
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === "WA_EMBEDDED_SIGNUP") {
+          console.log("Evento de WhatsApp Embedded Signup:", data);
+          mostrarResultado(
+            "📩 Evento recibido:\n" + JSON.stringify(data, null, 2)
+          );
+        }
+      } catch (e) {
+        // Meta manda otros mensajes que no son JSON, los ignoramos.
+      }
+    });
+
+    document.getElementById("btnConectar").addEventListener("click", () => {
+      FB.login(
+        (response) => {
+          console.log("Respuesta de FB.login:", response);
+          mostrarResultado(
+            "✅ Respuesta de FB.login:\n" + JSON.stringify(response, null, 2)
+          );
+        },
+        {
+          config_id: "2017048782334504", // la Configuration ID que generaste
+          response_type: "code",
+          override_default_response_type: true,
+          extras: {
+            setup: {},
+            featureType: "whatsapp_business_app_onboarding",
+            sessionInfoVersion: "3",
+          },
+        }
+      );
+    });
+  </script>
+</body>
+</html>

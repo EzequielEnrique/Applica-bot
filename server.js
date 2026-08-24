@@ -2,6 +2,7 @@
 require("dotenv").config();
 const express = require("express");
 const menu = require("./menu");
+const path = require("path");
 
 const app = express();
 app.use(express.json());
@@ -62,6 +63,14 @@ function guardarEstado(numero, estado) {
 }
 
 // --------------------------------------------------------------------------
+
+// Sirve la página de conexión de WhatsApp (conectar.html) que está en la
+// raíz del proyecto, para poder abrirla como https://.../conectar.html
+app.get("/conectar.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "conectar.html"));
+});
+
+
 
 app.get("/", (req, res) => {
   res.send("Bot de Huella Urbana funcionando ✅");
@@ -186,5 +195,6 @@ app.listen(PORT, () => {
   console.log(`🚀 Server escuchando en el puerto ${PORT}`);
   console.log(`   Ruta del webhook: /webhook`);
 });
+
 
 module.exports = app;
