@@ -62,8 +62,6 @@ function guardarEstado(numero, estado) {
   conversaciones.set(numero, { estado, ultimaActividad: Date.now() });
 }
 
-// --------------------------------------------------------------------------
-
 // Sirve la página de conexión de WhatsApp (conectar.html) que está en la
 // raíz del proyecto, para poder abrirla como https://.../conectar.html
 app.get("/conectar.html", (req, res) => {
@@ -120,34 +118,45 @@ app.post("/webhook", async (req, res) => {
 
     if (estado === "inicio") {
       await sendWhatsAppMessage(from, menu.welcome);
-      guardarEstado(from, "esperando_proyecto");
+      guardarEstado(from, "esperando_opcion");
       return;
     }
 
-    if (estado === "esperando_proyecto") {
-      if (text === "1" || text === "2") {
-        await sendWhatsAppMessage(from, menu.unidades);
-        guardarEstado(from, "esperando_unidad");
-      } else if (text === "3" || text === "4") {
+    
+    if (estado === "esperando_opcion") {
+      if (text === "1") {
+        await sendWhatsAppMessage(from, menu.proyectos);
+        guardarEstado(from, "esperando_edificio");
+      } else if (text === "2") {
         await sendWhatsAppMessage(from, menu.derivado);
         guardarEstado(from, "atendido");
       } else {
         await sendWhatsAppMessage(from, menu.welcome);
-        guardarEstado(from, "esperando_proyecto");
+        guardarEstado(from, "esperando_opcion");
       }
       return;
     }
 
-    if (estado === "esperando_unidad") {
-      if (text === "6") {
-        await sendWhatsAppMessage(from, menu.welcome);
-        guardarEstado(from, "esperando_proyecto");
-      } else if (["1", "2", "3", "4", "5"].includes(text)) {
+    
+    if (estado === "esperando_edificio") {
+      if (["1", "2", "3"].includes(text)) {
+        await sendWhatsAppMessage(from, menu.tipoConsulta);
+        guardarEstado(from, "esperando_tipo");
+      } else {
+        await sendWhatsAppMessage(from, menu.proyectos);
+        guardarEstado(from, "esperando_edificio");
+      }
+      return;
+    }
+
+    
+    if (estado === "esperando_tipo") {
+      if (text === "1" || text === "2") {
         await sendWhatsAppMessage(from, menu.derivado);
         guardarEstado(from, "atendido");
       } else {
-        await sendWhatsAppMessage(from, menu.unidades);
-        guardarEstado(from, "esperando_unidad");
+        await sendWhatsAppMessage(from, menu.tipoConsulta);
+        guardarEstado(from, "esperando_tipo");
       }
       return;
     }
